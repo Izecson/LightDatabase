@@ -70,7 +70,27 @@ public abstract class BasicType implements Type, Serializable {
 	}
 
 	@Override
+	public Type negate() {
+		return null;
+	}
+	
+	@Override
 	public Type add(Type val) {
+		return null;
+	}
+
+	@Override
+	public Type multiply(Type val) {
+		return null;
+	}
+	
+	@Override
+	public Type divide(Type val) {
+		return null;
+	}
+	
+	@Override
+	public Type mod(int val) {
 		return null;
 	}
 

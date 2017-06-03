@@ -30,7 +30,15 @@ public interface Type {
 	public String toString();
 
 	public Type add(Type val);
+	
+	public Type negate();
 
+	public Type multiply(Type val);
+	
+	public Type divide(Type val);
+	
+	public Type mod(int val);
+	
 	public Type divide(int count);
 
 	public int compareTo(Type tb);

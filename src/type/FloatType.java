@@ -86,13 +86,64 @@ public class FloatType extends BasicType {
 		}
 		return value.toString();
 	}
+	
+	@Override
+	public Type negate() {
+		if (this.value == null) {
+			return null;
+		}
+		return new FloatType(this.value.negate());
+	}
 
 	@Override
 	public Type add(Type val) {
 		if (this.value == null || val.getValue() == null) {
 			return null;
+		} else
+		if (val.isINT()) {
+			return new FloatType(this.value.add(BigDecimal.valueOf((Integer) val.getValue())));
+		} else
+		if (val.isFLOAT()) {
+			return new FloatType(this.value.add(BigDecimal.valueOf((Float) val.getValue())));
+		} else
+		if (val.isDECIMAL()) {
+			return new DecimalType(this.value.add((BigDecimal) val.getValue()));
 		}
-		return new FloatType(this.value.add((BigDecimal) val.getValue()));
+		return null;
+	}
+	
+	@Override
+	public Type multiply(Type val) {
+		if (this.value == null || val.getValue() == null) {
+			return null;
+		} else
+		if (val.isINT()) {
+			return new FloatType(this.value.multiply(BigDecimal.valueOf((Integer) val.getValue())));
+		} else
+		if (val.isFLOAT()) {
+			return new FloatType(this.value.multiply(BigDecimal.valueOf((Float) val.getValue())));
+		} else
+		if (val.isDECIMAL()) {
+			return new DecimalType(this.value.multiply((BigDecimal) val.getValue()));
+		}
+		return null;
+	}
+	
+	@Override
+	public Type divide(Type val) {
+		if (this.value == null || val.getValue() == null) {
+			return null;
+		} else
+		if (val.isINT()) {
+			return new FloatType(this.value.divide(BigDecimal.valueOf((Integer) val.getValue())));
+		} else
+		if (val.isFLOAT()) {
+			return new FloatType(this.value.divide(BigDecimal.valueOf((Float) val.getValue())));
+		} else
+		if (val.isDECIMAL()) {
+			return new DecimalType(this.value.divide((BigDecimal) val.getValue()));
+		}
+		return null;
 	}
 
 	@Override

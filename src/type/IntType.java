@@ -1,5 +1,7 @@
 package type;
 
+import java.math.BigDecimal;
+
 @SuppressWarnings("serial")
 public class IntType extends BasicType {
 	private Integer value;
@@ -83,11 +85,70 @@ public class IntType extends BasicType {
 	}
 
 	@Override
+	public Type negate() {
+		if (this.value == null) {
+			return null;
+		}
+		return new IntType(Integer.valueOf(-this.value.intValue()));
+	}
+	
+	@Override
 	public Type add(Type val) {
 		if (this.value == null || val.getValue() == null) {
 			return null;
+		} else
+		if (val.isINT()) {
+			return new IntType(Integer.valueOf(this.value.intValue() + (Integer) val.getValue()));
+		} else
+		if (val.isFLOAT()) {
+			return new FloatType(BigDecimal.valueOf(this.value).add(BigDecimal.valueOf((Float) val.getValue())));
+		} else
+		if (val.isDECIMAL()) {
+			return new DecimalType(BigDecimal.valueOf(this.value).add((BigDecimal) val.getValue()));
 		}
-		return new IntType(Integer.valueOf(this.value.intValue() + (Integer) val.getValue()));
+		return null;
+	}
+	
+	@Override
+	public Type multiply(Type val) {
+		if (this.value == null || val.getValue() == null) {
+			return null;
+		} else
+		if (val.isINT()) {
+			return new IntType(Integer.valueOf(this.value.intValue() * (Integer) val.getValue()));
+		} else
+		if (val.isFLOAT()) {
+			return new FloatType(BigDecimal.valueOf(this.value).multiply(BigDecimal.valueOf((Float) val.getValue())));
+		} else
+		if (val.isDECIMAL()) {
+			return new DecimalType(BigDecimal.valueOf(this.value).multiply((BigDecimal) val.getValue()));
+		}
+		return null;
+	}
+	
+	@Override
+	public Type divide(Type val) {
+		if (this.value == null || val.getValue() == null) {
+			return null;
+		} else
+		if (val.isINT()) {
+			return new FloatType(BigDecimal.valueOf(this.value).divide(BigDecimal.valueOf((Integer) val.getValue())));
+		} else
+		if (val.isFLOAT()) {
+			return new FloatType(BigDecimal.valueOf(this.value).divide(BigDecimal.valueOf((Float) val.getValue())));
+		} else
+		if (val.isDECIMAL()) {
+			return new DecimalType(BigDecimal.valueOf(this.value).divide((BigDecimal) val.getValue()));
+		}
+		return null;
+	}
+	
+	@Override
+	public Type mod (int val) {
+		if (this.value == null) {
+			return null;
+		}
+		return new IntType(Integer.valueOf(this.value.intValue() % val));
 	}
 
 	@Override
@@ -95,7 +156,7 @@ public class IntType extends BasicType {
 		if (this.value == null) {
 			return null;
 		}
-		return new DecimalType(Float.valueOf((float) this.value.intValue() / (float) count));
+		return new FloatType(Float.valueOf((float) this.value.intValue() / (float) count));
 	}
 	
 	@Override
