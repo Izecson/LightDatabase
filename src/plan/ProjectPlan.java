@@ -17,6 +17,7 @@ public class ProjectPlan implements Plan {
 		subPlan = p;
 		subPlan.setFather(this);
 		// TODO: project plan schema
+		schema = subPlan.schema();
 	}
 	
 	@Override

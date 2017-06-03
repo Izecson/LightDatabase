@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import prototype.Schema;
 import prototype.Table;
 import scan.Scan;
+import scan.TableScan;
 
 public class TablePlan implements Plan {
 	Plan fatherPlan;
@@ -16,8 +17,7 @@ public class TablePlan implements Plan {
 	
 	@Override
 	public Scan start() {
-		// TODO: table plan start
-		return null;
+		return new TableScan(table);
 	}
 
 	@Override

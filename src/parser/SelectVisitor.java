@@ -35,18 +35,18 @@ public class SelectVisitor extends Visitor {
 					exprList.add(getExpr(expr));
 				}
 				// TODO: more powerful select.
-				LinkedList<Plan> plans = new LinkedList<Plan>();
+				ProductPlan lastPlan = null;
 				for(CommonTree fromCls : children) {
 					if (fromCls.getType() == LightdbLexer.FROM) {
 						List<CommonTree> names = (List<CommonTree>) fromCls.getChildren();
 						for (CommonTree tbl : names) {
 							Table table = Database.getDatabase().getTable(tbl.toString().toLowerCase());
-							plans.add(new TablePlan(table));
+							lastPlan = new ProductPlan(lastPlan, new TablePlan(table));
 						}
 						break;
 					}
 				}
-				plan = new ProjectPlan(exprList, new SelectPlan(new ProductPlan(plans)));
+				plan = new ProjectPlan(exprList, new SelectPlan(lastPlan));
 			} else {
 				throw new DatabaseException("Builtin error, please have a check.");
 			}
