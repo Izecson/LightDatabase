@@ -2,8 +2,8 @@ package plan;
 
 import java.util.LinkedList;
 
-import database.Schema;
-import database.Table;
+import prototype.Schema;
+import prototype.Table;
 import scan.Scan;
 
 public class TablePlan implements Plan {
@@ -16,7 +16,7 @@ public class TablePlan implements Plan {
 	
 	@Override
 	public Scan start() {
-		// TODO: table plan
+		// TODO: table plan start
 		return null;
 	}
 

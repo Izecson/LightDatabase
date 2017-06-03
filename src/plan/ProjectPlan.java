@@ -2,8 +2,8 @@ package plan;
 
 import java.util.LinkedList;
 
-import database.Schema;
 import expr.Expr;
+import prototype.Schema;
 import scan.Scan;
 
 public class ProjectPlan implements Plan {
@@ -16,7 +16,7 @@ public class ProjectPlan implements Plan {
 		exprList = exprs;
 		subPlan = p;
 		subPlan.setFather(this);
-		// TODO: schema
+		// TODO: project plan schema
 	}
 	
 	@Override

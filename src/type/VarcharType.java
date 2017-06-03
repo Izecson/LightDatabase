@@ -1,6 +1,6 @@
 package type;
 
-import database.DatabaseException;
+import prototype.DatabaseException;
 
 @SuppressWarnings("serial")
 public class VarcharType extends BasicType {

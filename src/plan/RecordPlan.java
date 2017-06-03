@@ -2,8 +2,8 @@ package plan;
 
 import java.util.LinkedList;
 
-import database.Record;
-import database.Schema;
+import prototype.Record;
+import prototype.Schema;
 import scan.RecordScan;
 import scan.Scan;
 

@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.antlr.runtime.tree.CommonTree;
 
-import database.Column;
-import database.DatabaseException;
-import database.Schema;
-import database.Table;
+import prototype.Column;
+import prototype.DatabaseException;
+import prototype.Schema;
+import prototype.Table;
 import type.BooleanType;
 import type.CharType;
 import type.DecimalType;

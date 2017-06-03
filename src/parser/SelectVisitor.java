@@ -5,15 +5,15 @@ import java.util.List;
 
 import org.antlr.runtime.tree.CommonTree;
 
-import database.Database;
-import database.DatabaseException;
-import database.Table;
 import expr.Expr;
 import plan.Plan;
 import plan.ProductPlan;
 import plan.ProjectPlan;
 import plan.SelectPlan;
 import plan.TablePlan;
+import prototype.Database;
+import prototype.DatabaseException;
+import prototype.Table;
 
 /*
  * Select
