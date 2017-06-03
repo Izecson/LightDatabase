@@ -1,6 +1,5 @@
 package expr;
 
-import database.Schema;
 import scan.Scan;
 import type.Type;
 
