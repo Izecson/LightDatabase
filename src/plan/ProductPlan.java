@@ -2,24 +2,25 @@ package plan;
 
 import java.util.LinkedList;
 
-import database.Schema;
+import prototype.Schema;
+import scan.ProductScan;
 import scan.Scan;
 
 public class ProductPlan implements Plan {
 	Plan fatherPlan;
-	LinkedList<Plan> plans;
+	Plan plan1;
+	Plan plan2;
 	
-	public ProductPlan(LinkedList<Plan> plans) {
-		this.plans = plans;
-		for (Plan p : plans) {
-			p.setFather(this);
-		}
+	public ProductPlan(Plan p1, Plan p2) {
+		plan1 = p1;
+		plan2 = p2;
+		plan1.setFather(this);
+		plan2.setFather(this);
 	}
 	
 	@Override
 	public Scan start() {
-		// TODO: product plan start
-		return null;
+		return new ProductScan(plan1.start(), plan2.start());
 	}
 
 	@Override
@@ -30,12 +31,16 @@ public class ProductPlan implements Plan {
 
 	@Override
 	public LinkedList<Plan> getChildren() {
+		LinkedList<Plan> plans = new LinkedList<Plan>();
+		plans.add(plan1);
+		plans.add(plan2);
 		return plans;
 	}
 
 	@Override
 	public Plan setChildren(LinkedList<Plan> plans) {
-		this.plans = plans;
+		plan1 = plans.get(0);
+		plan2 = plans.get(1);
 		return this;
 	}
 

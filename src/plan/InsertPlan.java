@@ -2,8 +2,8 @@ package plan;
 
 import java.util.LinkedList;
 
-import database.Schema;
-import database.Table;
+import prototype.Schema;
+import prototype.Table;
 import scan.Scan;
 
 public class InsertPlan implements Plan {

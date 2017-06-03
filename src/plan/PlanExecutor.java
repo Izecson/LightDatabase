@@ -1,6 +1,6 @@
 package plan;
 
-import database.Table;
+import prototype.Table;
 
 public class PlanExecutor {
 	Plan rootPlan = null;

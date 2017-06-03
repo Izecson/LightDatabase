@@ -2,7 +2,7 @@ package plan;
 
 import java.util.LinkedList;
 
-import database.Schema;
+import prototype.Schema;
 import scan.Scan;
 
 public class SelectPlan implements Plan {

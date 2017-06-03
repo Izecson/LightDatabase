@@ -2,8 +2,8 @@ package parser;
 
 import org.antlr.runtime.tree.CommonTree;
 
-import database.Database;
-import database.DatabaseException;
+import prototype.Database;
+import prototype.DatabaseException;
 
 /*
  * Create or Drop Database

@@ -2,9 +2,9 @@ package parser;
 
 import org.antlr.runtime.tree.CommonTree;
 
-import database.Column;
-import database.DatabaseException;
 import expr.*;
+import prototype.Column;
+import prototype.DatabaseException;
 import type.BooleanType;
 import type.CharType;
 import type.FloatType;
