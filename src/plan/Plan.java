@@ -12,11 +12,11 @@ public interface Plan {
 	
 	public LinkedList<Plan> getChildren();
 	
-	public void setChildren(LinkedList<Plan> plans);
+	public Plan setChildren(LinkedList<Plan> plans);
 	
 	public Plan getFather();
 	
-	public void setFather(Plan fa);
+	public Plan setFather(Plan fa);
 	
 	public String toString();
 }

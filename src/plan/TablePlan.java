@@ -6,21 +6,18 @@ import database.Schema;
 import database.Table;
 import scan.Scan;
 
-public class InsertPlan implements Plan {
-	// Table to be inserted.
-	private Table table;
-	// Plan to insert.
-	private Plan subPlan;
-
-	public InsertPlan(Table tbl, Plan p) {
+public class TablePlan implements Plan {
+	Plan fatherPlan;
+	Table table;
+	
+	public TablePlan(Table tbl) {
 		table = tbl;
-		subPlan = p;
-		subPlan.setFather(this);
 	}
-
+	
 	@Override
 	public Scan start() {
-		return subPlan.start();
+		// TODO: table plan
+		return null;
 	}
 
 	@Override
@@ -31,28 +28,27 @@ public class InsertPlan implements Plan {
 	@Override
 	public LinkedList<Plan> getChildren() {
 		LinkedList<Plan> ret = new LinkedList<Plan>();
-		ret.add(subPlan);
 		return ret;
 	}
 
 	@Override
 	public Plan setChildren(LinkedList<Plan> plans) {
-		subPlan = plans.get(0);
 		return this;
 	}
 
 	@Override
 	public Plan getFather() {
-		return null;
+		return fatherPlan;
 	}
 
 	@Override
 	public Plan setFather(Plan fa) {
+		fatherPlan = fa;
 		return this;
 	}
 
 	@Override
 	public String toString() {
-		return "Insert ";
+		return "Table ";
 	}
 }

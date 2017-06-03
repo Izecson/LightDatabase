@@ -2,37 +2,40 @@ package plan;
 
 import java.util.LinkedList;
 
-import database.Record;
 import database.Schema;
-import scan.RecordScan;
 import scan.Scan;
 
-public class RecordPlan implements Plan {
-	private Record record;
-	private Plan fatherPlan;
-
-	public RecordPlan(Record r) {
-		record = r;
+public class ProductPlan implements Plan {
+	Plan fatherPlan;
+	LinkedList<Plan> plans;
+	
+	public ProductPlan(LinkedList<Plan> plans) {
+		this.plans = plans;
+		for (Plan p : plans) {
+			p.setFather(this);
+		}
 	}
-
+	
 	@Override
 	public Scan start() {
-		return new RecordScan(record);
+		// TODO: product plan start
+		return null;
 	}
 
 	@Override
 	public Schema schema() {
+		// TODO: product plan schema
 		return null;
 	}
 
 	@Override
 	public LinkedList<Plan> getChildren() {
-		LinkedList<Plan> ret = new LinkedList<Plan>();
-		return ret;
+		return plans;
 	}
 
 	@Override
 	public Plan setChildren(LinkedList<Plan> plans) {
+		this.plans = plans;
 		return this;
 	}
 
@@ -49,6 +52,6 @@ public class RecordPlan implements Plan {
 
 	@Override
 	public String toString() {
-		return "Record ";
+		return "Product ";
 	}
 }

@@ -3,21 +3,22 @@ package plan;
 import java.util.LinkedList;
 
 import database.Schema;
-import database.Table;
+import expr.Expr;
 import scan.Scan;
 
-public class InsertPlan implements Plan {
-	// Table to be inserted.
-	private Table table;
-	// Plan to insert.
-	private Plan subPlan;
-
-	public InsertPlan(Table tbl, Plan p) {
-		table = tbl;
+public class ProjectPlan implements Plan {
+	Schema schema;
+	Plan fatherPlan;
+	Plan subPlan;
+	LinkedList<Expr> exprList;
+	
+	public ProjectPlan(LinkedList<Expr> exprs, Plan p) {
+		exprList = exprs;
 		subPlan = p;
 		subPlan.setFather(this);
+		// TODO: schema
 	}
-
+	
 	@Override
 	public Scan start() {
 		return subPlan.start();
@@ -25,7 +26,7 @@ public class InsertPlan implements Plan {
 
 	@Override
 	public Schema schema() {
-		return table.getSchema();
+		return schema;
 	}
 
 	@Override
@@ -43,16 +44,17 @@ public class InsertPlan implements Plan {
 
 	@Override
 	public Plan getFather() {
-		return null;
+		return fatherPlan;
 	}
 
 	@Override
 	public Plan setFather(Plan fa) {
+		fatherPlan = fa;
 		return this;
 	}
 
 	@Override
 	public String toString() {
-		return "Insert ";
+		return "Project ";
 	}
 }
