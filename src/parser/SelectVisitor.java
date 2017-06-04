@@ -41,7 +41,7 @@ public class SelectVisitor extends Visitor {
 						List<CommonTree> names = (List<CommonTree>) fromCls.getChildren();
 						for (CommonTree tbl : names) {
 							Table table = Database.getDatabase().getTable(tbl.toString().toLowerCase());
-							lastPlan = new ProductPlan(lastPlan, new TablePlan(table));
+							lastPlan = new ProductPlan(new TablePlan(table), lastPlan);
 						}
 						break;
 					}

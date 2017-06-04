@@ -24,7 +24,7 @@ public class InsertPlan implements Plan {
 	}
 
 	@Override
-	public Schema schema() {
+	public Schema getSchema() {
 		return table.getSchema();
 	}
 
@@ -37,7 +37,9 @@ public class InsertPlan implements Plan {
 
 	@Override
 	public Plan setChildren(LinkedList<Plan> plans) {
-		subPlan = plans.get(0);
+		if (plans.size() >= 1) {
+			subPlan = plans.get(0);
+		}
 		return this;
 	}
 

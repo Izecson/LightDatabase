@@ -21,7 +21,7 @@ public class TablePlan implements Plan {
 	}
 
 	@Override
-	public Schema schema() {
+	public Schema getSchema() {
 		return table.getSchema();
 	}
 

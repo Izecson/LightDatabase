@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import prototype.Schema;
 import scan.Scan;
+import scan.SelectScan;
 
 public class SelectPlan implements Plan {
 	Plan subPlan;
@@ -16,12 +17,12 @@ public class SelectPlan implements Plan {
 	
 	@Override
 	public Scan start() {
-		return subPlan.start();
+		return new SelectScan(subPlan.start());
 	}
 
 	@Override
-	public Schema schema() {
-		return subPlan.schema();
+	public Schema getSchema() {
+		return subPlan.getSchema();
 	}
 
 	@Override
@@ -33,7 +34,9 @@ public class SelectPlan implements Plan {
 
 	@Override
 	public Plan setChildren(LinkedList<Plan> plans) {
-		subPlan = plans.get(0);
+		if (plans.size() >= 1) {
+			subPlan = plans.get(0);
+		}
 		return this;
 	}
 

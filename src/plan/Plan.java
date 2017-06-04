@@ -8,7 +8,7 @@ import scan.Scan;
 public interface Plan {
 	public Scan start();
 	
-	public Schema schema();
+	public Schema getSchema();
 	
 	public LinkedList<Plan> getChildren();
 	

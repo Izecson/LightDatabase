@@ -21,8 +21,8 @@ public class RecordPlan implements Plan {
 	}
 
 	@Override
-	public Schema schema() {
-		return null;
+	public Schema getSchema() {
+		return record.getSchema();
 	}
 
 	@Override
