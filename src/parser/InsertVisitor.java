@@ -6,7 +6,8 @@ import java.util.List;
 
 import org.antlr.runtime.tree.CommonTree;
 
-import plan.PlanExecutor;
+import plan.InsertPlan;
+import plan.Plan;
 import plan.RecordPlan;
 import prototype.*;
 import type.*;
@@ -19,7 +20,7 @@ import type.*;
  */
 @SuppressWarnings("unchecked")
 public class InsertVisitor extends Visitor {
-	PlanExecutor executor = new PlanExecutor();
+	private Plan plan = null;
 
 	@Override
 	public void visit(CommonTree t) {
@@ -31,7 +32,7 @@ public class InsertVisitor extends Visitor {
 				Table table = Database.getDatabase().getTable(tableName);
 				
 				CommonTree val_clause = (CommonTree) t.getChild(1);
-				executor.createInsertPlan(table, new RecordPlan(
+				plan = new InsertPlan(table, new RecordPlan(
 						parseValues(val_clause, table.getSchema())));
 			} else
 			// // statement -> insert_statement -> INSERT_COLUMNS tbl_name col_name* values_clause
@@ -48,7 +49,7 @@ public class InsertVisitor extends Visitor {
 						cols.add(child.toString().toLowerCase());
 					} else
 					if (child.getType() == LightdbLexer.VALUES) {
-						executor.createInsertPlan(table, new RecordPlan(
+						plan = new InsertPlan(table, new RecordPlan(
 								parseValuesWithColumns(child, table.getSchema(), cols)));
 						break;
 					}
@@ -63,7 +64,7 @@ public class InsertVisitor extends Visitor {
 				CommonTree subq = (CommonTree) t.getChild(1);
 				SelectVisitor selectVis = new SelectVisitor();
 				selectVis.visit(subq);
-				executor.createInsertPlan(table, selectVis.getPlan());
+				plan = new InsertPlan(table, selectVis.getPlan());
 			} else {
 				throw new DatabaseException("Builtin error, please have a check.");
 			}
