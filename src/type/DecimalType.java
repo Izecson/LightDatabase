@@ -12,6 +12,7 @@ public class DecimalType extends BasicType {
 		type = DataType.DECIMAL;
 		scale = scl;
 		decimal = dec;
+		value = null;
 	}
 	
 	public DecimalType(BigDecimal val) {
@@ -32,6 +33,8 @@ public class DecimalType extends BasicType {
 		type = DataType.DECIMAL;
 		if (s == null || "null".equals(s)) {
 			value = null;
+			scale = 0;
+			decimal = 0;
 		} else {
 			value = new BigDecimal(s);
 			scale = value.scale();
@@ -105,7 +108,7 @@ public class DecimalType extends BasicType {
 	@Override
 	public Type negate() {
 		if (this.value == null) {
-			return null;
+			return this.clone();
 		}
 		return new DecimalType(this.value.negate());
 	}
@@ -113,7 +116,9 @@ public class DecimalType extends BasicType {
 	@Override
 	public Type add(Type val) {
 		if (this.value == null || val.getValue() == null) {
-			return null;
+			if (val.isINT() || val.isFLOAT() || val.isDECIMAL()) {
+				return this.clone();
+			}
 		} else
 		if (val.isINT()) {
 			return new DecimalType(this.value.add(BigDecimal.valueOf((Integer) val.getValue())));
@@ -130,7 +135,9 @@ public class DecimalType extends BasicType {
 	@Override
 	public Type multiply(Type val) {
 		if (this.value == null || val.getValue() == null) {
-			return null;
+			if (val.isINT() || val.isFLOAT() || val.isDECIMAL()) {
+				return this.clone();
+			}
 		} else
 		if (val.isINT()) {
 			return new DecimalType(this.value.multiply(BigDecimal.valueOf((Integer) val.getValue())));
@@ -147,7 +154,9 @@ public class DecimalType extends BasicType {
 	@Override
 	public Type divide(Type val) {
 		if (this.value == null || val.getValue() == null) {
-			return null;
+			if (val.isINT() || val.isFLOAT() || val.isDECIMAL()) {
+				return this.clone();
+			}
 		} else
 		if (val.isINT()) {
 			return new DecimalType(this.value.divide(BigDecimal.valueOf((Integer) val.getValue())));
@@ -164,7 +173,7 @@ public class DecimalType extends BasicType {
 	@Override
 	public Type divide(int count) {
 		if (this.value == null) {
-			return null;
+			return this.clone();
 		}
 		return new DecimalType(this.value.divide(new BigDecimal(count)));
 	}

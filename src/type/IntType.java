@@ -8,6 +8,7 @@ public class IntType extends BasicType {
 	
 	public IntType() {
 		type = DataType.INT;
+		value = null;
 	}
 	
 	public IntType(Integer val) {
@@ -87,7 +88,7 @@ public class IntType extends BasicType {
 	@Override
 	public Type negate() {
 		if (this.value == null) {
-			return null;
+			return new IntType();
 		}
 		return new IntType(Integer.valueOf(-this.value.intValue()));
 	}
@@ -95,7 +96,9 @@ public class IntType extends BasicType {
 	@Override
 	public Type add(Type val) {
 		if (this.value == null || val.getValue() == null) {
-			return null;
+			if (val.isINT() || val.isFLOAT() || val.isDECIMAL()) {
+				return val.clone();
+			}
 		} else
 		if (val.isINT()) {
 			return new IntType(Integer.valueOf(this.value.intValue() + (Integer) val.getValue()));
@@ -112,7 +115,9 @@ public class IntType extends BasicType {
 	@Override
 	public Type multiply(Type val) {
 		if (this.value == null || val.getValue() == null) {
-			return null;
+			if (val.isINT() || val.isFLOAT() || val.isDECIMAL()) {
+				return val.clone();
+			}
 		} else
 		if (val.isINT()) {
 			return new IntType(Integer.valueOf(this.value.intValue() * (Integer) val.getValue()));
@@ -129,7 +134,12 @@ public class IntType extends BasicType {
 	@Override
 	public Type divide(Type val) {
 		if (this.value == null || val.getValue() == null) {
-			return null;
+			if (val.isFLOAT() || val.isDECIMAL()) {
+				return val.clone();
+			} else
+			if (val.isINT()) {
+				return new FloatType();
+			}
 		} else
 		if (val.isINT()) {
 			return new FloatType(BigDecimal.valueOf(this.value).divide(BigDecimal.valueOf((Integer) val.getValue())));
@@ -146,7 +156,7 @@ public class IntType extends BasicType {
 	@Override
 	public Type mod (int val) {
 		if (this.value == null) {
-			return null;
+			return this.clone();
 		}
 		return new IntType(Integer.valueOf(this.value.intValue() % val));
 	}
@@ -154,7 +164,7 @@ public class IntType extends BasicType {
 	@Override
 	public Type divide(int count) {
 		if (this.value == null) {
-			return null;
+			return this.clone();
 		}
 		return new FloatType(Float.valueOf((float) this.value.intValue() / (float) count));
 	}

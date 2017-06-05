@@ -6,9 +6,11 @@ public class BooleanType extends BasicType {
 
 	public BooleanType() {
 		type = DataType.BOOLEAN;
+		value = null;
 	}
 
 	public BooleanType(Boolean val) {
+		type = DataType.BOOLEAN;
 		value = val;
 	}
 

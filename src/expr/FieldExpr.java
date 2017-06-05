@@ -14,7 +14,7 @@ public class FieldExpr implements Expr {
 	
 	@Override
 	public Type getValue(Scan s) {
-		// TODO: get scan result.
+		// TODO: FieldExpr.getValue()
 		return null;
 	}
 	

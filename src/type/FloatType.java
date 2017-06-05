@@ -8,6 +8,7 @@ public class FloatType extends BasicType {
 
 	public FloatType() {
 		type = DataType.FLOAT;
+		value = null;
 	}
 
 	public FloatType(BigDecimal val) {
@@ -90,7 +91,7 @@ public class FloatType extends BasicType {
 	@Override
 	public Type negate() {
 		if (this.value == null) {
-			return null;
+			return this.clone();
 		}
 		return new FloatType(this.value.negate());
 	}
@@ -98,7 +99,12 @@ public class FloatType extends BasicType {
 	@Override
 	public Type add(Type val) {
 		if (this.value == null || val.getValue() == null) {
-			return null;
+			if (val.isINT() || val.isFLOAT()) {
+				return new FloatType();
+			} else
+			if (val.isDECIMAL()) {
+				return val.clone();
+			}
 		} else
 		if (val.isINT()) {
 			return new FloatType(this.value.add(BigDecimal.valueOf((Integer) val.getValue())));
@@ -115,7 +121,12 @@ public class FloatType extends BasicType {
 	@Override
 	public Type multiply(Type val) {
 		if (this.value == null || val.getValue() == null) {
-			return null;
+			if (val.isINT() || val.isFLOAT()) {
+				return new FloatType();
+			} else
+			if (val.isDECIMAL()) {
+				return val.clone();
+			}
 		} else
 		if (val.isINT()) {
 			return new FloatType(this.value.multiply(BigDecimal.valueOf((Integer) val.getValue())));
@@ -132,7 +143,12 @@ public class FloatType extends BasicType {
 	@Override
 	public Type divide(Type val) {
 		if (this.value == null || val.getValue() == null) {
-			return null;
+			if (val.isINT() || val.isFLOAT()) {
+				return new FloatType();
+			} else
+			if (val.isDECIMAL()) {
+				return val.clone();
+			}
 		} else
 		if (val.isINT()) {
 			return new FloatType(this.value.divide(BigDecimal.valueOf((Integer) val.getValue())));
@@ -149,7 +165,7 @@ public class FloatType extends BasicType {
 	@Override
 	public Type divide(int count) {
 		if (this.value == null) {
-			return null;
+			return this.clone();
 		}
 		return new FloatType(this.value.divide(new BigDecimal(count)));
 	}

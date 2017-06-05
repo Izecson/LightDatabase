@@ -10,6 +10,7 @@ public class CharType extends BasicType {
 	public CharType(int cap) {
 		type = DataType.CHAR;
 		capacity = cap;
+		value = null;
 	}
 	
 	public CharType(int cap, String s) throws DatabaseException {

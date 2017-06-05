@@ -12,6 +12,7 @@ public class VarcharType extends BasicType {
 		type = DataType.VARCHAR;
 		capacity = cap;
 		length = 0;
+		value = null;
 	}
 	
 	public VarcharType(int cap, String s) throws DatabaseException {
@@ -25,8 +26,8 @@ public class VarcharType extends BasicType {
 			if (sub.length() > capacity) {
 				throw new DatabaseException("Default string is too long.");
 			}
-			length = sub.length();
 			value = sub;
+			length = value.length();
 		}
 	}
 	

@@ -8,6 +8,7 @@ public class TimestampType extends BasicType {
 	
 	public TimestampType() {
 		type = DataType.TIMESTAMP;
+		value = null;
 	}
 	
 	public TimestampType(Timestamp ts) {
