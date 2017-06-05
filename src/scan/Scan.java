@@ -1,5 +1,7 @@
 package scan;
 
+import java.util.LinkedList;
+
 import type.Type;
 
 public interface Scan {
@@ -10,6 +12,8 @@ public interface Scan {
 	public void close();
 	
 	public int length();
+	
+	public LinkedList<Type> getRow() throws Exception;
 	
 	public Type getValue(int index) throws Exception;
 	

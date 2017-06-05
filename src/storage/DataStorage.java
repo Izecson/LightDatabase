@@ -12,5 +12,7 @@ public interface DataStorage {
 	
 	public void close();
 	
-	public LinkedList<Type> getValueList() throws DatabaseException;
+	public LinkedList<Type> getRow() throws DatabaseException;
+	
+	public void insertRow(LinkedList<Type> row);
 }

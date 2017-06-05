@@ -14,7 +14,9 @@ public interface Type {
 	public boolean isTIMESTAMP();
 
 	public boolean isVARCHAR();
-
+	
+	public boolean equalsType(Type t);
+	
 	public Object getValue();
 
 	public Type setValue(String s);

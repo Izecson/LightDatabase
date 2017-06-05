@@ -81,6 +81,9 @@ public abstract class Visitor {
 			if (col.hasDefault()) {
 				return tp.clone();
 			} else {
+				if (!col.isNullable()) {
+					throw new DatabaseException("Insert Error: Invalid null value.");
+				}
 				return tp.clone().setValue("null");
 			}
 		} else
@@ -91,11 +94,8 @@ public abstract class Visitor {
 			Type ret = e.getValue(null);
 			if (ret == null) {
 				throw new DatabaseException("Syntax error.");
-			} else
-			if (tp.isVARCHAR() || tp.isDECIMAL() || tp.isTIMESTAMP()) {
-				return tp.clone().setValue(ret.toString());
 			}
-			return ret;
+			return tp.clone().setValue(ret.toString());
 		}
 	}
 }

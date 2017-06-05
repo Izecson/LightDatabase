@@ -1,5 +1,7 @@
 package scan;
 
+import java.util.LinkedList;
+
 import type.Type;
 
 public class SelectScan implements Scan {
@@ -43,5 +45,10 @@ public class SelectScan implements Scan {
 	@Override
 	public int length() {
 		return sub.length();
+	}
+
+	@Override
+	public LinkedList<Type> getRow() throws Exception {
+		return sub.getRow();
 	}
 }

@@ -1,5 +1,7 @@
 package scan;
 
+import java.util.LinkedList;
+
 import prototype.Table;
 import type.Type;
 
@@ -43,5 +45,10 @@ public class TableScan implements Scan {
 	@Override
 	public Type getValue(String tbl, String col) throws Exception {
 		return table.getRecord().getValue(col);
+	}
+
+	@Override
+	public LinkedList<Type> getRow() throws Exception {
+		return table.getRecord().getValueList();
 	}
 }

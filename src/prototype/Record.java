@@ -19,6 +19,10 @@ public class Record implements Serializable {
 		return schema;
 	}
 	
+	public LinkedList<Type> getValueList() {
+		return values;
+	}
+	
 	public Type getValue(int index) throws Exception {
 		return values.get(index);
 	}

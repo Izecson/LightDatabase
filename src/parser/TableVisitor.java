@@ -116,7 +116,6 @@ public class TableVisitor extends Visitor {
 						}
 					}
 				}
-				col.typeCheck();
 				schema.add(tableName, colName, col);
 			} else {
 				throw new DatabaseException("Builtin error, please have a check.");

@@ -47,13 +47,21 @@ public class Column implements Serializable {
 		return this;
 	}
 	
-	public Column setAutoIncrement(boolean x) {
+	public Column setAutoIncrement(boolean x) throws DatabaseException {
+		if (x && !type.isINT()) {
+			throw new DatabaseException("Auto-incrementation cannot be applied on " + type.toString() + " type.");
+		}
 		autoIncrement = x;
 		return this;
 	}
 	
 	public int getNextInt() {
-		return nextInt++;
+		return nextInt;
+	}
+	
+	public Column updateNextInt(Type v) {
+		nextInt = Math.max(nextInt, (Integer) v.getValue()) + 1;
+		return this;
 	}
 	
 	public String getName() {
@@ -74,11 +82,5 @@ public class Column implements Serializable {
 	
 	public boolean autoIncrement() {
 		return autoIncrement;
-	}
-	
-	public void typeCheck() throws DatabaseException {
-		if (autoIncrement && type.isINT() == false) {
-			throw new DatabaseException("Auto-incrementation cannot be applied on " + type.toString() + " type.");
-		}
 	}
 }

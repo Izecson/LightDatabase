@@ -1,5 +1,7 @@
 package scan;
 
+import java.util.LinkedList;
+
 import type.Type;
 
 public class ProductScan implements Scan {
@@ -67,5 +69,13 @@ public class ProductScan implements Scan {
 	@Override
 	public int length() {
 		return sub1.length() + sub2.length();
+	}
+
+	@Override
+	public LinkedList<Type> getRow() throws Exception {
+		LinkedList<Type> ret = new LinkedList<Type>();
+		ret.addAll(sub1.getRow());
+		ret.addAll(sub2.getRow());
+		return ret;
 	}
 }

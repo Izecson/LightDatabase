@@ -19,8 +19,15 @@ public class InsertPlan implements Plan {
 	}
 
 	@Override
-	public Scan start() {
-		return subPlan.start();
+	public Scan start() throws Exception {
+		Scan scan = subPlan.start();
+		scan.open();
+		while (scan.next()) {
+			table.insertRow(scan.getRow());
+		}
+		scan.close();
+		
+		return null;
 	}
 
 	@Override

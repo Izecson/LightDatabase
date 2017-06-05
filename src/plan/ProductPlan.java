@@ -19,7 +19,7 @@ public class ProductPlan implements Plan {
 	}
 	
 	@Override
-	public Scan start() {
+	public Scan start() throws Exception {
 		if (plan1 == null && plan2 != null) {
 			return plan2.start();
 		} else

@@ -16,7 +16,7 @@ public class SelectPlan implements Plan {
 	}
 	
 	@Override
-	public Scan start() {
+	public Scan start() throws Exception {
 		return new SelectScan(subPlan.start());
 	}
 

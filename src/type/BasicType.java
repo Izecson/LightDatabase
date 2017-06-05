@@ -33,7 +33,19 @@ public abstract class BasicType implements Type, Serializable {
 	
 	@Override
 	public abstract int length();
-
+	
+	@Override
+	public boolean equalsType(Type t) {
+		if (t == null) return false;
+		return t.isBOOLEAN() && this.isBOOLEAN() ||
+				t.isCHAR() && this.isCHAR() ||
+				t.isDECIMAL() && this.isDECIMAL() ||
+				t.isFLOAT() && this.isFLOAT() ||
+				t.isINT() && this.isINT() ||
+				t.isTIMESTAMP() && this.isTIMESTAMP() ||
+				t.isVARCHAR() && this.isVARCHAR();
+	}
+	
 	@Override
 	public boolean isBOOLEAN() {
 		return type == DataType.BOOLEAN;

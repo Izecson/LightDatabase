@@ -33,11 +33,16 @@ public class DataStorageInMemory implements DataStorage {
 	}
 
 	@Override
-	public LinkedList<Type> getValueList() throws DatabaseException {
+	public LinkedList<Type> getRow() throws DatabaseException {
 		if (cursor >= 0 && cursor < values.size()) {
 			return values.get(cursor);
 		} else {
 			throw new DatabaseException("No more records.");
 		}
+	}
+
+	@Override
+	public void insertRow(LinkedList<Type> row) {
+		values.add(row);
 	}
 }

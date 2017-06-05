@@ -1,5 +1,7 @@
 package scan;
 
+import java.util.LinkedList;
+
 import prototype.Record;
 import type.Type;
 
@@ -56,5 +58,10 @@ public class RecordScan implements Scan {
 	@Override
 	public int length() {
 		return record.length();
+	}
+
+	@Override
+	public LinkedList<Type> getRow() {
+		return record.getValueList();
 	}
 }

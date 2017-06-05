@@ -6,7 +6,7 @@ import prototype.Schema;
 import scan.Scan;
 
 public interface Plan {
-	public Scan start();
+	public Scan start() throws Exception;
 	
 	public Schema getSchema();
 	

@@ -1,5 +1,7 @@
 package scan;
 
+import java.util.LinkedList;
+
 import prototype.Schema;
 import type.Type;
 
@@ -53,5 +55,19 @@ public class ProjectScan implements Scan {
 	@Override
 	public int length() {
 		return schema.length();
+	}
+
+	@Override
+	public LinkedList<Type> getRow() {
+		int length = length();
+		LinkedList<Type> ret = new LinkedList<Type>();
+		for (int i = 0; i < length; ++i) {
+			try {
+				ret.add(getValue(i));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return ret;
 	}
 }

@@ -84,7 +84,7 @@ public class VarcharType extends BasicType {
 	@Override
 	public Type clone() {
 		try {
-			return new CharType(capacity, "'" + value + "'");
+			return new VarcharType(capacity, "'" + value + "'");
 		} catch (DatabaseException e) {
 			e.printStackTrace();
 			return null;

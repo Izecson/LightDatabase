@@ -22,7 +22,7 @@ public class ProjectPlan implements Plan {
 	}
 	
 	@Override
-	public Scan start() {
+	public Scan start() throws Exception {
 		return new ProjectScan(subPlan.start(), schema);
 	}
 
