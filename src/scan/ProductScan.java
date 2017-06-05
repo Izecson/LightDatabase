@@ -38,7 +38,7 @@ public class ProductScan implements Scan {
 	}
 
 	@Override
-	public Type getValue(int index) {
+	public Type getValue(int index) throws Exception {
 		if (index < sub1.length()) {
 			return sub1.getValue(index);
 		} else {
@@ -47,7 +47,7 @@ public class ProductScan implements Scan {
 	}
 
 	@Override
-	public Type getValue(String col) {
+	public Type getValue(String col) throws Exception {
 		Type ret = sub1.getValue(col);
 		if (ret == null) {
 			ret = sub2.getValue(col);
@@ -56,7 +56,7 @@ public class ProductScan implements Scan {
 	}
 
 	@Override
-	public Type getValue(String tbl, String col) {
+	public Type getValue(String tbl, String col) throws Exception {
 		Type ret = sub1.getValue(tbl, col);
 		if (ret == null) {
 			ret = sub2.getValue(tbl, col);

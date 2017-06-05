@@ -2,7 +2,7 @@ package storage;
 
 import java.util.LinkedList;
 
-import prototype.Schema;
+import prototype.DatabaseException;
 import type.Type;
 
 public interface DataStorage {
@@ -12,7 +12,5 @@ public interface DataStorage {
 	
 	public void close();
 	
-	public LinkedList<Type> getValueList();
-	
-	public Schema getSchema();
+	public LinkedList<Type> getValueList() throws DatabaseException;
 }

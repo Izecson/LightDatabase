@@ -28,14 +28,14 @@ public class ProjectScan implements Scan {
 	}
 
 	@Override
-	public Type getValue(int index) {
+	public Type getValue(int index) throws Exception {
 		return sub.getValue(
 				schema.getTableNames().get(index),
 				schema.getColumnNames().get(index));
 	}
 
 	@Override
-	public Type getValue(String col) {
+	public Type getValue(String col) throws Exception {
 		if (schema.containsColumn(col)) {
 			return sub.getValue(col);
 		}
@@ -43,7 +43,7 @@ public class ProjectScan implements Scan {
 	}
 
 	@Override
-	public Type getValue(String tbl, String col) {
+	public Type getValue(String tbl, String col) throws Exception {
 		if (schema.containsColumn(tbl, col)) {
 			return sub.getValue(tbl, col);
 		}

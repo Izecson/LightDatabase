@@ -3,6 +3,7 @@ package prototype;
 import java.io.Serializable;
 
 import storage.DataStorage;
+import storage.DataStorageInMemory;
 
 @SuppressWarnings("serial")
 public class Table implements Serializable {
@@ -38,7 +39,7 @@ public class Table implements Serializable {
 		storage.close();
 	}
 	
-	public Record getRecord() {
+	public Record getRecord() throws DatabaseException {
 		return new Record(storage.getValueList(), schema);
 	}
 	

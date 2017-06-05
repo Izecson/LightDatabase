@@ -11,9 +11,9 @@ public interface Scan {
 	
 	public int length();
 	
-	public Type getValue(int index);
+	public Type getValue(int index) throws Exception;
 	
-	public Type getValue(String col);
+	public Type getValue(String col) throws Exception;
 	
-	public Type getValue(String tbl, String col);
+	public Type getValue(String tbl, String col) throws Exception;
 }

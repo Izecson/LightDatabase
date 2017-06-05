@@ -19,11 +19,11 @@ public class Record implements Serializable {
 		return schema;
 	}
 	
-	public Type getValue(int index) {
+	public Type getValue(int index) throws Exception {
 		return values.get(index);
 	}
 	
-	public Type getValue(String col) {
+	public Type getValue(String col) throws Exception {
 		LinkedList<String> names = schema.getColumnNames();
 		for (int i = 0; i < names.size(); ++i) {
 			if (names.get(i).equals(col)) {
