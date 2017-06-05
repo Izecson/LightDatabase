@@ -13,7 +13,7 @@ public class UnaryExpr implements Expr {
 	}
 	
 	@Override
-	public Type getValue(Scan s) {
+	public Type getValue(Scan s) throws Exception {
 		Type v = expr.getValue(s);
 		if ("-".equals(operator)) {
 			return v.negate();

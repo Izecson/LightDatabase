@@ -8,7 +8,6 @@ import scan.ProjectScan;
 import scan.Scan;
 
 public class ProjectPlan implements Plan {
-	Schema schema;
 	Plan fatherPlan;
 	Plan subPlan;
 	LinkedList<Expr> exprList;
@@ -17,18 +16,16 @@ public class ProjectPlan implements Plan {
 		exprList = exprs;
 		subPlan = p;
 		subPlan.setFather(this);
-		// TODO: project plan schema
-		schema = subPlan.getSchema();
 	}
 	
 	@Override
 	public Scan start() throws Exception {
-		return new ProjectScan(subPlan.start(), schema);
+		return new ProjectScan(subPlan.start(), exprList);
 	}
 
 	@Override
 	public Schema getSchema() {
-		return schema;
+		return subPlan.getSchema();
 	}
 
 	@Override

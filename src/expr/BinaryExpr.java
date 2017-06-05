@@ -15,7 +15,7 @@ public class BinaryExpr implements Expr {
 	}
 	
 	@Override
-	public Type getValue(Scan s) {
+	public Type getValue(Scan s) throws Exception {
 		Type left = leftExpr.getValue(s);
 		Type right = rightExpr.getValue(s);
 		if ("+".equals(operator)) {

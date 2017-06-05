@@ -31,7 +31,7 @@ public abstract class Visitor {
 		}
 	}
 	
-	abstract public void visit(CommonTree t);
+	abstract public void visit(CommonTree t) throws Exception;
 	
 	abstract public Plan getPlan();
 	
@@ -52,7 +52,7 @@ public abstract class Visitor {
 			return new FieldExpr(t.getChild(0).toString().toLowerCase(), t.getChild(1).toString().toLowerCase());
 		}
 		if (t.getType() == LightdbLexer.ID) {
-			return new FieldExpr(null, t.toString().toLowerCase());
+			return new FieldExpr("", t.toString().toLowerCase());
 		} else
 		if (t.getType() == LightdbLexer.INTEGER_LITERAL) {
 			return new ConstExpr(new IntType(t.toString()));
@@ -72,7 +72,7 @@ public abstract class Visitor {
 		return null;
 	}
 	
-	protected Type getValue(CommonTree t, Column col) throws DatabaseException {
+	protected Type getValue(CommonTree t, Column col) throws Exception {
 		Type tp = col.getType();
 		if (t == null || t.getType() == LightdbLexer.NULL) {
 			if (col.autoIncrement() && tp.isINT()) {

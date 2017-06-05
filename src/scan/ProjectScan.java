@@ -2,16 +2,16 @@ package scan;
 
 import java.util.LinkedList;
 
-import prototype.Schema;
+import expr.Expr;
 import type.Type;
 
 public class ProjectScan implements Scan {
 	Scan sub;
-	Schema schema;
+	LinkedList<Expr> exprList;
 	
-	public ProjectScan(Scan scan, Schema sch) {
+	public ProjectScan(Scan scan, LinkedList<Expr> exprs) {
 		sub = scan;
-		schema = sch;
+		exprList = exprs;
 	}
 
 	@Override
@@ -31,30 +31,32 @@ public class ProjectScan implements Scan {
 
 	@Override
 	public Type getValue(int index) throws Exception {
-		return sub.getValue(
-				schema.getTableNames().get(index),
-				schema.getColumnNames().get(index));
+		return exprList.get(index).getValue(sub);
 	}
 
 	@Override
 	public Type getValue(String col) throws Exception {
+		/*
 		if (schema.containsColumn(col)) {
 			return sub.getValue(col);
 		}
+		*/
 		return null;
 	}
 
 	@Override
 	public Type getValue(String tbl, String col) throws Exception {
+		/*
 		if (schema.containsColumn(tbl, col)) {
 			return sub.getValue(tbl, col);
 		}
+		*/
 		return null;
 	}
 
 	@Override
 	public int length() {
-		return schema.length();
+		return exprList.size();
 	}
 
 	@Override

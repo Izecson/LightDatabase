@@ -28,7 +28,7 @@ public class InsertVisitor extends Visitor {
 		plan = null;
 	}
 	@Override
-	public void visit(CommonTree t) {
+	public void visit(CommonTree t) throws Exception {
 		try {
 			// statement -> insert_statement -> INSERT_VALUES tbl_name values_clause
 			if (t.getType() == LightdbLexer.INSERT_VALUES) {
@@ -78,7 +78,7 @@ public class InsertVisitor extends Visitor {
 		}
 	}
 	
-	private Record parseValues(CommonTree t, Schema schema) {
+	private Record parseValues(CommonTree t, Schema schema) throws Exception {
 		try {
 			if (t.getType() == LightdbLexer.VALUES) {
 				Iterator<CommonTree> treeIter = (Iterator<CommonTree>) t.getChildren().iterator();
@@ -97,7 +97,7 @@ public class InsertVisitor extends Visitor {
 		}
 	}
 	
-	private Record parseValuesWithColumns(CommonTree t, Schema schema, List<String> namedCols) {
+	private Record parseValuesWithColumns(CommonTree t, Schema schema, List<String> namedCols) throws Exception {
 		try {
 			if (t.getType() == LightdbLexer.VALUES) {
 				List<CommonTree> children = (List<CommonTree>) t.getChildren();
