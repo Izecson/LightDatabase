@@ -15,6 +15,7 @@ public class Table implements Serializable {
 	public Table(String tbl, Schema sch) {
 		name = tbl;
 		schema = sch;
+		primaryKey = null;
 		storage = createDataStorage(name);
 	}
 	

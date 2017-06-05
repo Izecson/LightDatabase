@@ -4,7 +4,12 @@ import java.util.HashMap;
 
 public class DatabaseManager {
 	private Database db;
-	private HashMap<String, Database> baseMap = new HashMap<String, Database>();
+	private HashMap<String, Database> baseMap;
+	
+	public DatabaseManager() {
+		db = null;
+		baseMap = new HashMap<String, Database>();
+	}
 	
 	public Database getDatabase() throws DatabaseException {
 		if (db == null) {

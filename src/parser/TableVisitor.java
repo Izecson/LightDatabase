@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.antlr.runtime.tree.CommonTree;
 
+import plan.Plan;
 import prototype.Column;
 import prototype.DatabaseException;
 import prototype.DatabaseManager;
@@ -123,6 +124,10 @@ public class TableVisitor extends Visitor {
 		} catch (DatabaseException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public Plan getPlan() {
+		return null;
 	}
 	
 	// data_type -> real_type

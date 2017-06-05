@@ -2,6 +2,7 @@ package parser;
 
 import org.antlr.runtime.tree.CommonTree;
 
+import plan.Plan;
 import prototype.DatabaseException;
 import prototype.DatabaseManager;
 
@@ -41,5 +42,9 @@ public class DatabaseVisitor extends Visitor {
 		} catch (DatabaseException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public Plan getPlan() {
+		return null;
 	}
 }

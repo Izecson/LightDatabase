@@ -3,6 +3,7 @@ package parser;
 import org.antlr.runtime.tree.CommonTree;
 
 import expr.*;
+import plan.Plan;
 import prototype.Column;
 import prototype.DatabaseException;
 import type.BooleanType;
@@ -31,6 +32,8 @@ public abstract class Visitor {
 	}
 	
 	abstract public void visit(CommonTree t);
+	
+	abstract public Plan getPlan();
 	
 	protected Expr getExpr(CommonTree t) throws DatabaseException {
 		if (t.getType() == 105 || t.getType() == 108 || t.getType() == 109 ||
