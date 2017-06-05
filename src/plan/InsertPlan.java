@@ -10,17 +10,17 @@ public class InsertPlan implements Plan {
 	// Table to be inserted.
 	private Table table;
 	// Plan to insert.
-	private Plan subPlan;
+	private Plan sub;
 
 	public InsertPlan(Table tbl, Plan p) {
 		table = tbl;
-		subPlan = p;
-		subPlan.setFather(this);
+		sub = p;
+		sub.setFather(this);
 	}
 
 	@Override
 	public Scan start() throws Exception {
-		Scan scan = subPlan.start();
+		Scan scan = sub.start();
 		scan.open();
 		while (scan.next()) {
 			table.insertRow(scan.getRow());
@@ -38,14 +38,14 @@ public class InsertPlan implements Plan {
 	@Override
 	public LinkedList<Plan> getChildren() {
 		LinkedList<Plan> ret = new LinkedList<Plan>();
-		ret.add(subPlan);
+		ret.add(sub);
 		return ret;
 	}
 
 	@Override
 	public Plan setChildren(LinkedList<Plan> plans) {
 		if (plans.size() >= 1) {
-			subPlan = plans.get(0);
+			sub = plans.get(0);
 		}
 		return this;
 	}

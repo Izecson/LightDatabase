@@ -7,6 +7,7 @@ import type.Type;
 
 public class DataStorageInMemory implements DataStorage {
 	int cursor;
+	int rowNumber;
 	String tableName;
 	LinkedList<LinkedList<Type>> values;
 	
@@ -19,17 +20,19 @@ public class DataStorageInMemory implements DataStorage {
 	@Override
 	public void open() {
 		cursor = -1;
+		rowNumber = values.size();
 	}
 
 	@Override
 	public boolean next() {
 		cursor++;
-		return cursor < values.size();
+		return cursor < rowNumber;
 	}
 
 	@Override
 	public void close() {
 		cursor = -1;
+		rowNumber = values.size();
 	}
 
 	@Override
