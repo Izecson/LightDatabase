@@ -6,6 +6,7 @@ import org.antlr.runtime.tree.CommonTree;
 
 import prototype.Column;
 import prototype.DatabaseException;
+import prototype.DatabaseManager;
 import prototype.Schema;
 import prototype.Table;
 import type.BooleanType;
@@ -23,8 +24,15 @@ import type.VarcharType;
  *	->DROP TABLE tbl-name [,tbl-name]
  */
 public class TableVisitor extends Visitor {
-	private String tableName = null;
-	private Schema schema = new Schema();
+	private DatabaseManager manager;
+	private String tableName;
+	private Schema schema;
+	
+	public TableVisitor(DatabaseManager dm) {
+		manager = dm;
+		tableName = null;
+		schema = new Schema();
+	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
@@ -54,14 +62,14 @@ public class TableVisitor extends Visitor {
 						}
 					}
 				}
-				Table table = Table.createTable(tableName, schema);
+				Table table = manager.getDatabase().createTable(tableName, schema);
 				table.setPrimaryKey(primaryKey);
 			} else
 			if (t.getType() == LightdbLexer.DROP_TABLE) {
 				List<CommonTree> children = (List<CommonTree>) t.getChildren();
 				for (CommonTree child : children) {
 					if (child.getType() == LightdbLexer.ID) {
-						Table.dropTable(child.toString().toLowerCase());
+						manager.getDatabase().dropTable(child.toString().toLowerCase());
 					}
 				}
 			} else {

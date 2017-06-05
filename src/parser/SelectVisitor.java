@@ -11,8 +11,8 @@ import plan.ProductPlan;
 import plan.ProjectPlan;
 import plan.SelectPlan;
 import plan.TablePlan;
-import prototype.Database;
 import prototype.DatabaseException;
+import prototype.DatabaseManager;
 import prototype.Table;
 
 /*
@@ -22,7 +22,13 @@ import prototype.Table;
  */
 @SuppressWarnings("unchecked")
 public class SelectVisitor extends Visitor {
-	private Plan plan = null;
+	private DatabaseManager manager;
+	private Plan plan;
+	
+	public SelectVisitor(DatabaseManager dm) {
+		manager = dm;
+		plan = null;
+	}
 	
 	@Override
 	public void visit(CommonTree t) {
@@ -40,7 +46,7 @@ public class SelectVisitor extends Visitor {
 					if (fromCls.getType() == LightdbLexer.FROM) {
 						List<CommonTree> names = (List<CommonTree>) fromCls.getChildren();
 						for (CommonTree tbl : names) {
-							Table table = Database.getDatabase().getTable(tbl.toString().toLowerCase());
+							Table table = manager.getDatabase().getTable(tbl.toString().toLowerCase());
 							lastPlan = new ProductPlan(new TablePlan(table), lastPlan);
 						}
 						break;

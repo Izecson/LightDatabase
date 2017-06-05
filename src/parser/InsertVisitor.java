@@ -20,8 +20,13 @@ import type.*;
  */
 @SuppressWarnings("unchecked")
 public class InsertVisitor extends Visitor {
-	private Plan plan = null;
+	private DatabaseManager manager;
+	private Plan plan;
 
+	public InsertVisitor(DatabaseManager dm) {
+		manager = dm;
+		plan = null;
+	}
 	@Override
 	public void visit(CommonTree t) {
 		try {
@@ -29,7 +34,7 @@ public class InsertVisitor extends Visitor {
 			if (t.getType() == LightdbLexer.INSERT_VALUES) {
 				CommonTree tbl = (CommonTree) t.getChild(0);
 				String tableName = tbl.toString().toLowerCase();
-				Table table = Database.getDatabase().getTable(tableName);
+				Table table = manager.getDatabase().getTable(tableName);
 				
 				CommonTree val_clause = (CommonTree) t.getChild(1);
 				plan = new InsertPlan(table, new RecordPlan(
@@ -39,7 +44,7 @@ public class InsertVisitor extends Visitor {
 			if (t.getType() == LightdbLexer.INSERT_COLUMNS) {
 				CommonTree tbl = (CommonTree) t.getChild(0);
 				String tableName = tbl.toString().toLowerCase();
-				Table table = Database.getDatabase().getTable(tableName);
+				Table table = manager.getDatabase().getTable(tableName);
 				
 				List<CommonTree> children = (List<CommonTree>) t.getChildren();
 				LinkedList<String> cols = new LinkedList<String>();
@@ -59,10 +64,10 @@ public class InsertVisitor extends Visitor {
 			if (t.getType() == LightdbLexer.INSERT_SUBQUERY) {
 				CommonTree tbl = (CommonTree) t.getChild(0);
 				String tableName = tbl.toString().toLowerCase();
-				Table table = Database.getDatabase().getTable(tableName);
+				Table table = manager.getDatabase().getTable(tableName);
 				
 				CommonTree subq = (CommonTree) t.getChild(1);
-				SelectVisitor selectVis = new SelectVisitor();
+				SelectVisitor selectVis = new SelectVisitor(manager);
 				selectVis.visit(subq);
 				plan = new InsertPlan(table, selectVis.getPlan());
 			} else {
@@ -117,5 +122,9 @@ public class InsertVisitor extends Visitor {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public Plan getPlan() {
+		return plan;
 	}
 }
