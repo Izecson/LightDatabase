@@ -5,25 +5,24 @@ import type.Type;
 
 public class TableScan implements Scan {
 	Table table;
-	DataStorage storage;
-	
+
 	public TableScan(Table tbl) {
 		table = tbl;
 	}
 
 	@Override
-	public boolean next() {
-		return storage.next();
+	public void open() {
+		table.open();
 	}
 
 	@Override
-	public void open() {
-		storage = DataStorageFactory.createStorage(table);
+	public boolean next() {
+		return table.next();
 	}
 
 	@Override
 	public void close() {
-		storage.close();
+		table.close();
 	}
 
 	@Override
@@ -33,16 +32,16 @@ public class TableScan implements Scan {
 
 	@Override
 	public Type getValue(int index) {
-		return storage.getRecord().getValue(index);
+		return table.getRecord().getValue(index);
 	}
 
 	@Override
 	public Type getValue(String col) {
-		return storage.getRecord().getValue(col);
+		return table.getRecord().getValue(col);
 	}
 
 	@Override
 	public Type getValue(String tbl, String col) {
-		return storage.getRecord.getValue(tbl, col);
+		return table.getRecord().getValue(col);
 	}
 }
