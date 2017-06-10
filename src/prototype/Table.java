@@ -29,21 +29,21 @@ public class Table implements Serializable {
 		primaryKey = schema.getColumnIndex(key);
 		return this;
 	}
-	
+
 	public void open() {
 		storage.open();
-	}
-	
-	public boolean next() {
-		return storage.next();
 	}
 	
 	public void close() {
 		storage.close();
 	}
-	
-	public Record getRecord() throws DatabaseException {
-		return new Record(storage.getRow(), schema);
+
+	public int size() {
+		return storage.size();
+	}
+
+	public Record getRecord(int index) throws DatabaseException {
+		return new Record(storage.getRow(index), schema);
 	}
 	
 	public void insertRow(LinkedList<Type> values) throws DatabaseException {

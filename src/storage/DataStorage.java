@@ -8,11 +8,11 @@ import type.Type;
 public interface DataStorage {
 	public void open();
 	
-	public boolean next();
-	
 	public void close();
 	
-	public LinkedList<Type> getRow() throws DatabaseException;
+	public int size();
+	
+	public LinkedList<Type> getRow(int index) throws DatabaseException;
 	
 	public void insertRow(LinkedList<Type> row);
 }

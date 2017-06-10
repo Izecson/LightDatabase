@@ -6,6 +6,8 @@ import prototype.Table;
 import type.Type;
 
 public class TableScan implements Scan {
+	int cursor;
+	int size;
 	Table table;
 
 	public TableScan(Table tbl) {
@@ -14,12 +16,15 @@ public class TableScan implements Scan {
 
 	@Override
 	public void open() {
+		cursor = -1;
+		size = table.size();
 		table.open();
 	}
 
 	@Override
 	public boolean next() {
-		return table.next();
+		++cursor;
+		return cursor < size;
 	}
 
 	@Override
@@ -34,21 +39,21 @@ public class TableScan implements Scan {
 
 	@Override
 	public Type getValue(int index) throws Exception {
-		return table.getRecord().getValue(index);
+		return table.getRecord(cursor).getValue(index);
 	}
 
 	@Override
 	public Type getValue(String col) throws Exception {
-		return table.getRecord().getValue(col);
+		return table.getRecord(cursor).getValue(col);
 	}
 
 	@Override
 	public Type getValue(String tbl, String col) throws Exception {
-		return table.getRecord().getValue(col);
+		return table.getRecord(cursor).getValue(col);
 	}
 
 	@Override
 	public LinkedList<Type> getRow() throws Exception {
-		return table.getRecord().getValueList();
+		return table.getRecord(cursor).getValueList();
 	}
 }

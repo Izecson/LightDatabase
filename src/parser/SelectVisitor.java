@@ -21,6 +21,7 @@ import prototype.Table;
  * Select
 	->SELECT [DISTINCT] select-expr,бн
 		[FROM tbl-ref[,tbl-ref]бн]
+		[WHERE where-condition]
  */
 @SuppressWarnings("unchecked")
 public class SelectVisitor extends Visitor {
