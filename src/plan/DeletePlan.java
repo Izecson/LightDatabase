@@ -2,31 +2,36 @@ package plan;
 
 import java.util.LinkedList;
 
+import predicate.Predicate;
 import prototype.Schema;
 import prototype.Table;
 import scan.Scan;
+import scan.TableScan;
 
-public class InsertPlan implements Plan {
-	// Table to be inserted.
+public class DeletePlan implements Plan {
 	Table table;
-	// Plan to insert.
-	Plan sub;
-
-	public InsertPlan(Table tbl, Plan p) {
+	Predicate pred;
+	
+	public DeletePlan(Table tbl, Predicate pr) {
 		table = tbl;
-		sub = p;
-		sub.setFather(this);
+		pred = pr;
 	}
 
 	@Override
 	public Scan start() throws Exception {
-		Scan scan = sub.start();
+		Scan scan = new TableScan(table);
+		LinkedList<Integer> indices = new LinkedList<Integer>();
+		
+		int index = 0;
 		scan.open();
 		while (scan.next()) {
-			table.insertRow(scan.getRow());
+			if (pred.isTrue(scan)) {
+				indices.add(index);
+			}
+			index++;
 		}
+		table.deleteRows(indices);
 		scan.close();
-		
 		return null;
 	}
 
@@ -38,15 +43,11 @@ public class InsertPlan implements Plan {
 	@Override
 	public LinkedList<Plan> getChildren() {
 		LinkedList<Plan> ret = new LinkedList<Plan>();
-		ret.add(sub);
 		return ret;
 	}
 
 	@Override
 	public Plan setChildren(LinkedList<Plan> plans) {
-		if (plans.size() >= 1) {
-			sub = plans.get(0);
-		}
 		return this;
 	}
 
@@ -60,8 +61,4 @@ public class InsertPlan implements Plan {
 		return this;
 	}
 
-	@Override
-	public String toString() {
-		return "Insert ";
-	}
 }

@@ -12,9 +12,7 @@ import prototype.DatabaseManager;
 	-> USE db-name
 	-> DROP DATABASE db-name
  */
-public class DatabaseVisitor extends Visitor {
-	public DatabaseManager manager;
-	
+public class DatabaseVisitor extends Visitor {	
 	public DatabaseVisitor(DatabaseManager dm) {
 		manager = dm;
 	}

@@ -15,4 +15,6 @@ public interface DataStorage {
 	public LinkedList<Type> getRow(int index) throws DatabaseException;
 	
 	public void insertRow(LinkedList<Type> row);
+	
+	public void deleteRow(int index) throws DatabaseException;
 }

@@ -72,6 +72,12 @@ public class Table implements Serializable {
 		}
 	}
 	
+	public void deleteRows(LinkedList<Integer> indices) throws DatabaseException {
+		for (int i = 0; i < indices.size(); ++i) {
+			storage.deleteRow(indices.get(i).intValue() - i);
+		}
+	}
+	
 	private DataStorage createDataStorage(String tbl) {
 		return new DataStorageInMemory(tbl);
 	}

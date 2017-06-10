@@ -38,4 +38,13 @@ public class DataStorageInMemory implements DataStorage {
 	public void insertRow(LinkedList<Type> row) {
 		values.add(row);
 	}
+
+	@Override
+	public void deleteRow(int index) throws DatabaseException {
+		if (index >= 0 && index < values.size()) {
+			values.remove(index);
+		} else {
+			throw new DatabaseException("Row index out of range.");
+		}
+	}
 }

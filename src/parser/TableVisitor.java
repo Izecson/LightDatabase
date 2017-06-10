@@ -25,7 +25,6 @@ import type.VarcharType;
  *	->DROP TABLE tbl-name [,tbl-name]
  */
 public class TableVisitor extends Visitor {
-	private DatabaseManager manager;
 	private String tableName;
 	private Schema schema;
 	

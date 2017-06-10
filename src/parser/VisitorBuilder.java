@@ -17,7 +17,10 @@ public class VisitorBuilder {
 		if (t == LightdbLexer.INSERT_VALUES ||
 			t == LightdbLexer.INSERT_COLUMNS ||
 			t == LightdbLexer.INSERT_SUBQUERY) {
-				return new InsertVisitor(dm);
+			return new InsertVisitor(dm);
+		} else
+		if (t == LightdbLexer.DELETE) {
+			return new DeleteVisitor(dm);
 		} else
 		if (t == LightdbLexer.SELECT || t == LightdbLexer.SELECT_DISTINCT) {
 			return new SelectVisitor(dm);

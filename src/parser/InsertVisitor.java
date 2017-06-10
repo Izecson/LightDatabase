@@ -20,7 +20,6 @@ import type.*;
  */
 @SuppressWarnings("unchecked")
 public class InsertVisitor extends Visitor {
-	private DatabaseManager manager;
 	private Plan plan;
 
 	public InsertVisitor(DatabaseManager dm) {
@@ -68,9 +67,7 @@ public class InsertVisitor extends Visitor {
 				Table table = manager.getDatabase().getTable(tableName);
 				
 				CommonTree subq = (CommonTree) t.getChild(1);
-				SelectVisitor selectVis = new SelectVisitor(manager);
-				selectVis.visit(subq);
-				plan = new InsertPlan(table, selectVis.getPlan());
+				plan = new InsertPlan(table, parseSelect(subq));
 			} else {
 				throw new DatabaseException("Builtin error, please have a check.");
 			}
