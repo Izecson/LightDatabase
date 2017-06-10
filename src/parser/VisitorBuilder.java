@@ -19,7 +19,7 @@ public class VisitorBuilder {
 			t == LightdbLexer.INSERT_SUBQUERY) {
 				return new InsertVisitor(dm);
 		} else
-		if (t == LightdbLexer.SELECT) {
+		if (t == LightdbLexer.SELECT || t == LightdbLexer.SELECT_DISTINCT) {
 			return new SelectVisitor(dm);
 		} else {
 			throw new DatabaseException("Error: unsupported grammar.");

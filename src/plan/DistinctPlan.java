@@ -2,30 +2,26 @@ package plan;
 
 import java.util.LinkedList;
 
-import expr.Expr;
 import prototype.Schema;
-import scan.ProjectScan;
+import scan.DistinctScan;
 import scan.Scan;
 
-public class ProjectPlan implements Plan {
-	Plan fatherPlan;
+public class DistinctPlan implements Plan {
 	Plan subPlan;
-	LinkedList<Expr> exprList;
+	Plan fatherPlan;
 	
-	public ProjectPlan(LinkedList<Expr> exprs, Plan p) {
-		exprList = exprs;
-		subPlan = p;
+	public DistinctPlan(Plan sub) {
+		subPlan = sub;
 		subPlan.setFather(this);
 	}
 	
 	@Override
 	public Scan start() throws Exception {
-		return new ProjectScan(subPlan.start(), subPlan.getSchema(), exprList);
+		return new DistinctScan(subPlan.start());
 	}
 
 	@Override
 	public Schema getSchema() {
-		// TODO: ProjectPlan.schema
 		return subPlan.getSchema();
 	}
 
@@ -55,8 +51,4 @@ public class ProjectPlan implements Plan {
 		return this;
 	}
 
-	@Override
-	public String toString() {
-		return "Project ";
-	}
 }

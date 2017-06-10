@@ -52,7 +52,7 @@ public abstract class Visitor {
 			return new FieldExpr(t.getChild(0).toString().toLowerCase(), t.getChild(1).toString().toLowerCase());
 		}
 		if (t.getType() == LightdbLexer.ID) {
-			return new FieldExpr("", t.toString().toLowerCase());
+			return new FieldExpr("$", t.toString().toLowerCase());
 		} else
 		if (t.getType() == LightdbLexer.INTEGER_LITERAL) {
 			return new ConstExpr(new IntType(t.toString()));

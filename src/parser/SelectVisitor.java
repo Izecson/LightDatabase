@@ -6,6 +6,7 @@ import java.util.List;
 import org.antlr.runtime.tree.CommonTree;
 
 import expr.Expr;
+import plan.DistinctPlan;
 import plan.Plan;
 import plan.ProductPlan;
 import plan.ProjectPlan;
@@ -33,7 +34,7 @@ public class SelectVisitor extends Visitor {
 	@Override
 	public void visit(CommonTree t) {
 		try {
-			if (t.getType() == LightdbLexer.SELECT) {
+			if (t.getType() == LightdbLexer.SELECT || t.getType() == LightdbLexer.SELECT_DISTINCT) {
 				List<CommonTree> children = (List<CommonTree>) t.getChildren();
 				LinkedList<Expr> exprList = new LinkedList<Expr>();
 				for (CommonTree expr : children) {
@@ -41,18 +42,21 @@ public class SelectVisitor extends Visitor {
 					exprList.add(getExpr(expr));
 				}
 				// TODO: more powerful select.
-				ProductPlan lastPlan = null;
+				ProductPlan fromPlan = null;
 				for(CommonTree fromCls : children) {
 					if (fromCls.getType() == LightdbLexer.FROM) {
 						List<CommonTree> names = (List<CommonTree>) fromCls.getChildren();
 						for (CommonTree tbl : names) {
 							Table table = manager.getDatabase().getTable(tbl.toString().toLowerCase());
-							lastPlan = new ProductPlan(new TablePlan(table), lastPlan);
+							fromPlan = new ProductPlan(new TablePlan(table), fromPlan);
 						}
 						break;
 					}
 				}
-				plan = new ProjectPlan(exprList, new SelectPlan(lastPlan));
+				plan = new ProjectPlan(exprList, new SelectPlan(fromPlan));
+				if (t.getType() == LightdbLexer.SELECT_DISTINCT) {
+					plan = new DistinctPlan(plan);
+				}
 			} else {
 				throw new DatabaseException("Builtin error, please have a check.");
 			}

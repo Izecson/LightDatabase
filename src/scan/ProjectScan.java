@@ -3,14 +3,17 @@ package scan;
 import java.util.LinkedList;
 
 import expr.Expr;
+import prototype.Schema;
 import type.Type;
 
 public class ProjectScan implements Scan {
 	Scan sub;
+	Schema schema;
 	LinkedList<Expr> exprList;
 	
-	public ProjectScan(Scan scan, LinkedList<Expr> exprs) {
+	public ProjectScan(Scan scan, Schema sch, LinkedList<Expr> exprs) {
 		sub = scan;
+		schema = sch;
 		exprList = exprs;
 	}
 
@@ -36,21 +39,19 @@ public class ProjectScan implements Scan {
 
 	@Override
 	public Type getValue(String col) throws Exception {
-		/*
-		if (schema.containsColumn(col)) {
-			return sub.getValue(col);
+		int ind = schema.getColumnIndex(col);
+		if (ind >= 0) {
+			return getValue(ind);
 		}
-		*/
 		return null;
 	}
 
 	@Override
 	public Type getValue(String tbl, String col) throws Exception {
-		/*
-		if (schema.containsColumn(tbl, col)) {
-			return sub.getValue(tbl, col);
+		int ind = schema.getColumnIndex(tbl, col);
+		if (ind >= 0) {
+			return getValue(ind);
 		}
-		*/
 		return null;
 	}
 
