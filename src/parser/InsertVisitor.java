@@ -27,6 +27,7 @@ public class InsertVisitor extends Visitor {
 		manager = dm;
 		plan = null;
 	}
+
 	@Override
 	public void visit(CommonTree t) throws Exception {
 		try {

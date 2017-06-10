@@ -2,6 +2,7 @@ package plan;
 
 import java.util.LinkedList;
 
+import predicate.Predicate;
 import prototype.Schema;
 import scan.Scan;
 import scan.SelectScan;
@@ -9,15 +10,17 @@ import scan.SelectScan;
 public class SelectPlan implements Plan {
 	Plan subPlan;
 	Plan fatherPlan;
+	Predicate pred;
 	
-	public SelectPlan(Plan p) {
+	public SelectPlan(Plan p, Predicate pr) {
+		pred = pr;
 		subPlan = p;
 		subPlan.setFather(this);
 	}
 	
 	@Override
 	public Scan start() throws Exception {
-		return new SelectScan(subPlan.start());
+		return new SelectScan(subPlan.start(), pred);
 	}
 
 	@Override

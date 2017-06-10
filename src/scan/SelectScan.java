@@ -2,14 +2,16 @@ package scan;
 
 import java.util.LinkedList;
 
+import predicate.Predicate;
 import type.Type;
 
 public class SelectScan implements Scan {
 	Scan sub;
-	// more powerful select
+	Predicate pred;
 	
-	public SelectScan(Scan scan) {
+	public SelectScan(Scan scan, Predicate pr) {
 		sub = scan;
+		pred = pr;
 	}
 
 	@Override
@@ -19,7 +21,17 @@ public class SelectScan implements Scan {
 
 	@Override
 	public boolean next() {
-		return sub.next();
+		try {
+			while (sub.next()) {
+				if (pred == null || pred.isTrue(sub)) {
+					return true;
+				}
+			}
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	@Override

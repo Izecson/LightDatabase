@@ -45,10 +45,11 @@ public class DistinctScan implements Scan {
 					return true;
 				}
 			}
+			return false;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return false;
 		}
-		return false;
 	}
 
 	@Override
