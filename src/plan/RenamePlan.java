@@ -2,42 +2,29 @@ package plan;
 
 import java.util.LinkedList;
 
-import expr.Expr;
 import prototype.Schema;
-import scan.ProjectScan;
+import scan.RenameScan;
 import scan.Scan;
 
-public class ProjectPlan implements Plan {
+public class RenamePlan implements Plan {
 	Plan fatherPlan;
 	Plan subPlan;
-	Schema schema;
-	LinkedList<Expr> exprList;
-	LinkedList<String> alias;
+	String alias;
 	
-	public ProjectPlan(LinkedList<Expr> exprs, LinkedList<String> as, Plan p) {
-		exprList = exprs;
+	public RenamePlan(Plan plan, String as) {
+		subPlan = plan;
 		alias = as;
-		subPlan = p;
 		subPlan.setFather(this);
-		
-		schema = new Schema();
-		for (String name : alias) {
-			if (name == null) {
-				schema.add("*", "*", null);
-			} else {
-				schema.add("*", name, null);
-			}
-		}
 	}
 	
 	@Override
 	public Scan start() throws Exception {
-		return new ProjectScan(subPlan.start(), schema, exprList);
+		return new RenameScan(subPlan.start(), alias);
 	}
 
 	@Override
 	public Schema getSchema() {
-		return schema;
+		return subPlan.getSchema();
 	}
 
 	@Override
@@ -56,11 +43,6 @@ public class ProjectPlan implements Plan {
 	}
 
 	@Override
-	public Plan getFather() {
-		return fatherPlan;
-	}
-
-	@Override
 	public Plan setFather(Plan fa) {
 		fatherPlan = fa;
 		return this;
@@ -68,6 +50,12 @@ public class ProjectPlan implements Plan {
 
 	@Override
 	public String toString() {
-		return "Project ";
+		return "Rename ";
 	}
+
+	@Override
+	public Plan getFather() {
+		return fatherPlan;
+	}
+
 }

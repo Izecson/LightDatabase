@@ -61,4 +61,8 @@ public class DeletePlan implements Plan {
 		return this;
 	}
 
+	@Override
+	public String toString() {
+		return "Delete ";
+	}
 }

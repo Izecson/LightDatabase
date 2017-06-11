@@ -10,6 +10,7 @@ import plan.DistinctPlan;
 import plan.Plan;
 import plan.ProductPlan;
 import plan.ProjectPlan;
+import plan.RenamePlan;
 import plan.SelectPlan;
 import plan.TablePlan;
 import predicate.AllPred;
@@ -23,17 +24,14 @@ import predicate.Predicate;
 import prototype.Column;
 import prototype.DatabaseException;
 import prototype.DatabaseManager;
+import prototype.Schema;
 import prototype.Table;
 import type.BooleanType;
 import type.CharType;
 import type.FloatType;
 import type.IntType;
 import type.Type;
-/*
- * - Select
-	-> SELECT [DISTINCT] select-expr,бн
-		[FROM tbl-ref[,tbl-ref]бн]
- */
+
 public abstract class Visitor {
 	DatabaseManager manager;
 	
@@ -72,7 +70,7 @@ public abstract class Visitor {
 			return new FieldExpr(t.getChild(0).toString().toLowerCase(), t.getChild(1).toString().toLowerCase());
 		}
 		if (t.getType() == LightdbLexer.ID) {
-			return new FieldExpr("$", t.toString().toLowerCase());
+			return new FieldExpr("*", t.toString().toLowerCase());
 		} else
 		if (t.getType() == LightdbLexer.INTEGER_LITERAL) {
 			return new ConstExpr(new IntType(t.toString()));
@@ -124,27 +122,60 @@ public abstract class Visitor {
 		try {
 			if (t.getType() == LightdbLexer.SELECT || t.getType() == LightdbLexer.SELECT_DISTINCT) {
 				List<CommonTree> children = (List<CommonTree>) t.getChildren();
-				LinkedList<Expr> exprList = new LinkedList<Expr>();
-				for (CommonTree expr : children) {
-					if (expr.getType() == LightdbLexer.FROM) break;
-					exprList.add(getExpr(expr));
-				}
 				// TODO: more powerful select.
-				ProductPlan fromPlan = null;
+				Plan fromPlan = null;
 				Predicate pred = null;
 				for(CommonTree child : children) {
 					if (child.getType() == LightdbLexer.FROM) {
-						List<CommonTree> names = (List<CommonTree>) child.getChildren();
-						for (CommonTree tbl : names) {
-							Table table = manager.getDatabase().getTable(tbl.toString().toLowerCase());
-							fromPlan = new ProductPlan(new TablePlan(table), fromPlan);
+						List<CommonTree> refs = (List<CommonTree>) child.getChildren();
+						for (CommonTree fromcls : refs) {
+							if (fromcls.getType() == LightdbLexer.AS) {
+								Plan subPlan = null;
+								CommonTree sub = (CommonTree) fromcls.getChild(0);
+								if (sub.getType() == LightdbLexer.SELECT || sub.getType() == LightdbLexer.SELECT_DISTINCT) {
+									subPlan = parseSelect(sub);
+								} else {
+									Table table = manager.getDatabase().getTable(sub.toString().toLowerCase());
+									subPlan = new TablePlan(table);
+								}
+								CommonTree alias = (CommonTree) fromcls.getChild(1);
+								fromPlan = new ProductPlan(new RenamePlan(subPlan, alias.toString().toLowerCase()), fromPlan);
+							} else
+							if (fromcls.getType() == LightdbLexer.ID) {
+								Table table = manager.getDatabase().getTable(fromcls.toString().toLowerCase());
+								fromPlan = new ProductPlan(new TablePlan(table), fromPlan);
+							}
 						}
 					} else
 					if (child.getType() == LightdbLexer.WHERE) {
 						pred = parsePredicate((CommonTree) child.getChild(0));
 					}
 				}
-				Plan plan = new ProjectPlan(exprList, new SelectPlan(fromPlan, pred));
+				
+				LinkedList<Expr> exprList = new LinkedList<Expr>();
+				LinkedList<String> asNames = new LinkedList<String>();
+				for (CommonTree expr : children) {
+					if (expr.getType() == LightdbLexer.FROM) break;
+					if (expr.getType() == 108 && expr.getChildCount() == 0) {
+						Schema schema = fromPlan.getSchema();
+						for (int i = 0; i < schema.length(); ++i) {
+							exprList.add(new FieldExpr(schema.getTableName(i), schema.getColumnName(i)));
+							asNames.add(null);
+						}
+						continue;
+					} else
+					if (expr.getType() == LightdbLexer.AS) {
+						Expr e = getExpr((CommonTree) expr.getChild(0));
+						exprList.add(e);
+						asNames.add(expr.getChild(1).toString().toLowerCase());
+					} else {
+						Expr e = getExpr((CommonTree) expr);
+						exprList.add(e);
+						asNames.add(null);
+					}
+				}
+
+				Plan plan = new ProjectPlan(exprList, asNames, new SelectPlan(fromPlan, pred));
 				if (t.getType() == LightdbLexer.SELECT_DISTINCT) {
 					plan = new DistinctPlan(plan);
 				}

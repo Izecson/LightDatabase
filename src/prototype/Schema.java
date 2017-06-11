@@ -54,6 +54,14 @@ public class Schema implements Serializable {
 		return getColumnIndex(tbl, col) >= 0;
 	}
 	
+	public String getTableName(int index) {
+		return tableNames.get(index);
+	}
+	
+	public String getColumnName(int index) {
+		return columnNames.get(index);
+	}
+	
 	public int getColumnIndex(String col) {
 		for (int i = 0; i < columnNames.size(); ++i) {
 			if (columnNames.get(i).equals(col)) {

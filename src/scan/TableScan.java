@@ -49,7 +49,11 @@ public class TableScan implements Scan {
 
 	@Override
 	public Type getValue(String tbl, String col) throws Exception {
-		return table.getRecord(cursor).getValue(col);
+		if (table.getName().equals(tbl)) {
+			return table.getRecord(cursor).getValue(col);
+		} else {
+			return null;
+		}
 	}
 
 	@Override

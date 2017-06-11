@@ -14,10 +14,10 @@ public class FieldExpr implements Expr {
 	
 	@Override
 	public Type getValue(Scan s) throws Exception {
-		if ("$".equals(tableName) && !"$".equals("colName")) {
+		if ("*".equals(tableName) && !"*".equals("colName")) {
 			return s.getValue(colName);
 		} else
-		if (!"$".equals(tableName) && !"$".equals("colName")) {
+		if (!"*".equals(tableName) && !"*".equals("colName")) {
 			return s.getValue(tableName, colName);
 		}
 		return null;

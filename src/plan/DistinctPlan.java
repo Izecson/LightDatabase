@@ -51,4 +51,8 @@ public class DistinctPlan implements Plan {
 		return this;
 	}
 
+	@Override
+	public String toString() {
+		return "Distinct ";
+	}
 }

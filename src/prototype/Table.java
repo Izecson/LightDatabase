@@ -21,6 +21,10 @@ public class Table implements Serializable {
 		storage = createDataStorage(name);
 	}
 	
+	public String getName() {
+		return name;
+	}
+	
 	public Schema getSchema() {
 		return schema;
 	}
