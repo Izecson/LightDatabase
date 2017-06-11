@@ -21,7 +21,6 @@ import predicate.ExistPred;
 import predicate.InPred;
 import predicate.OrPred;
 import predicate.Predicate;
-import prototype.Column;
 import prototype.DatabaseException;
 import prototype.DatabaseManager;
 import prototype.Schema;
@@ -30,7 +29,6 @@ import type.BooleanType;
 import type.CharType;
 import type.FloatType;
 import type.IntType;
-import type.Type;
 
 public abstract class Visitor {
 	DatabaseManager manager;
@@ -53,17 +51,17 @@ public abstract class Visitor {
 	
 	abstract public Plan getPlan();
 	
-	protected Expr getExpr(CommonTree t) throws DatabaseException {
+	protected Expr parseExpr(CommonTree t) throws DatabaseException {
 		if (t.getType() == 105 || t.getType() == 108 || t.getType() == 109 ||
 			(t.getType() == 111 && t.getChildCount() == 2) || t.getType() == 113) {
 			return new BinaryExpr(
-					getExpr((CommonTree) t.getChild(0)),
-					getExpr((CommonTree) t.getChild(1)),
+					parseExpr((CommonTree) t.getChild(0)),
+					parseExpr((CommonTree) t.getChild(1)),
 					t.toString());
 		} else
 		if (t.getType() == 111 && t.getChildCount() == 1) {
 			return new UnaryExpr(
-					getExpr((CommonTree) t.getChild(0)),
+					parseExpr((CommonTree) t.getChild(0)),
 					"-");
 		} else
 		if (t.getType() == 112) {
@@ -88,33 +86,6 @@ public abstract class Visitor {
 			return new ConstExpr(new BooleanType(false));
 		}
 		return null;
-	}
-	
-	protected Type getValue(CommonTree t, Column col) throws Exception {
-		Type tp = col.getType();
-		if (t == null || t.getType() == LightdbLexer.NULL) {
-			if (col.autoIncrement() && tp.isINT()) {
-				return new IntType(col.getNextInt());
-			} else
-			if (col.hasDefault()) {
-				return tp.clone();
-			} else {
-				if (!col.isNullable()) {
-					throw new DatabaseException("Insert Error: Invalid null value.");
-				}
-				return tp.clone().setValue("null");
-			}
-		} else
-		if (t.getType() == LightdbLexer.DEFAULT) {
-			return tp.clone();
-		} else {
-			Expr e = getExpr(t);
-			Type ret = e.getValue(null);
-			if (ret == null) {
-				throw new DatabaseException("Syntax error.");
-			}
-			return tp.clone().setValue(ret.toString());
-		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -165,11 +136,11 @@ public abstract class Visitor {
 						continue;
 					} else
 					if (expr.getType() == LightdbLexer.AS) {
-						Expr e = getExpr((CommonTree) expr.getChild(0));
+						Expr e = parseExpr((CommonTree) expr.getChild(0));
 						exprList.add(e);
 						asNames.add(expr.getChild(1).toString().toLowerCase());
 					} else {
-						Expr e = getExpr((CommonTree) expr);
+						Expr e = parseExpr((CommonTree) expr);
 						exprList.add(e);
 						asNames.add(null);
 					}
@@ -203,7 +174,7 @@ public abstract class Visitor {
 		if (tree.getType() >= 114 && tree.getType() <= 119) {
 			CommonTree lftChild = (CommonTree) tree.getChild(0);
 			CommonTree rgtChild = (CommonTree) tree.getChild(1);
-			return new ComparePred(getExpr(lftChild), getExpr(rgtChild), tree.getText());
+			return new ComparePred(parseExpr(lftChild), parseExpr(rgtChild), tree.getText());
 		}
 		if (tree.getType() == LightdbLexer.NOT_EXISTS) {
 			CommonTree lftChild = (CommonTree) tree.getChild(0);
@@ -216,19 +187,19 @@ public abstract class Visitor {
 		if (tree.getType() == LightdbLexer.IN) {
 			CommonTree lftChild = (CommonTree) tree.getChild(0);
 			CommonTree rgtChild = (CommonTree) tree.getChild(1);
-			return new InPred(getExpr(lftChild), parseSelect(rgtChild));
+			return new InPred(parseExpr(lftChild), parseSelect(rgtChild));
 		}
 		if (tree.getType() == LightdbLexer.ANY) {
 			CommonTree lftChild = (CommonTree) tree.getChild(0);
 			CommonTree rgtChild = (CommonTree) tree.getChild(1);
 			CommonTree thirdChild = (CommonTree) tree.getChild(2);
-			return new AnyPred(getExpr(lftChild), parseSelect(thirdChild), rgtChild.getText());
+			return new AnyPred(parseExpr(lftChild), parseSelect(thirdChild), rgtChild.getText());
 		}
 		if (tree.getType() == LightdbLexer.ALL) {
 			CommonTree lftChild = (CommonTree) tree.getChild(0);
 			CommonTree rgtChild = (CommonTree) tree.getChild(1);
 			CommonTree thirdChild = (CommonTree) tree.getChild(2);
-			return new AllPred(getExpr(lftChild), parseSelect(thirdChild), rgtChild.getText());
+			return new AllPred(parseExpr(lftChild), parseSelect(thirdChild), rgtChild.getText());
 		}
 		return null;
 	}

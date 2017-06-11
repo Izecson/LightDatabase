@@ -35,6 +35,11 @@ public class TableVisitor extends Visitor {
 	}
 	
 	@Override
+	public Plan getPlan() {
+		return null;
+	}
+	
+	@Override
 	@SuppressWarnings("unchecked")
 	public void visit(CommonTree t) {
 		try {
@@ -80,7 +85,7 @@ public class TableVisitor extends Visitor {
 		}
 	}
 	@SuppressWarnings("unchecked")
-	public void parseColumns(CommonTree t) {
+	private void parseColumns(CommonTree t) {
 		try {
 			if (t.getType() == LightdbLexer.CREATE_DEFINITION) {
 				List<CommonTree> children = (List<CommonTree>) t.getChildren();
@@ -122,10 +127,6 @@ public class TableVisitor extends Visitor {
 		} catch (DatabaseException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public Plan getPlan() {
-		return null;
 	}
 	
 	// data_type -> real_type

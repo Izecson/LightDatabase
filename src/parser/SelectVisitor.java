@@ -24,6 +24,7 @@ public class SelectVisitor extends Visitor {
 		plan = parseSelect(t);
 	}
 	
+	@Override
 	public Plan getPlan() {
 		return plan;
 	}

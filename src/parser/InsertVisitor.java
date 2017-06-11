@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.antlr.runtime.tree.CommonTree;
 
+import expr.Expr;
 import plan.InsertPlan;
 import plan.Plan;
 import plan.RecordPlan;
@@ -25,6 +26,11 @@ public class InsertVisitor extends Visitor {
 	public InsertVisitor(DatabaseManager dm) {
 		manager = dm;
 		plan = null;
+	}
+	
+	@Override
+	public Plan getPlan() {
+		return plan;
 	}
 
 	@Override
@@ -122,7 +128,30 @@ public class InsertVisitor extends Visitor {
 		}
 	}
 	
-	public Plan getPlan() {
-		return plan;
+	private Type getValue(CommonTree t, Column col) throws Exception {
+		Type tp = col.getType();
+		if (t == null || t.getType() == LightdbLexer.NULL) {
+			if (col.autoIncrement() && tp.isINT()) {
+				return new IntType(col.getNextInt());
+			} else
+			if (col.hasDefault()) {
+				return tp.clone();
+			} else {
+				if (!col.isNullable()) {
+					throw new DatabaseException("Insert Error: Invalid null value.");
+				}
+				return tp.clone().setValue("null");
+			}
+		} else
+		if (t.getType() == LightdbLexer.DEFAULT) {
+			return tp.clone();
+		} else {
+			Expr e = parseExpr(t);
+			Type ret = e.getValue(null);
+			if (ret == null) {
+				throw new DatabaseException("Syntax error.");
+			}
+			return tp.clone().setValue(ret.toString());
+		}
 	}
 }
