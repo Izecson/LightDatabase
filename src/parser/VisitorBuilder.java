@@ -22,6 +22,9 @@ public class VisitorBuilder {
 		if (t == LightdbLexer.DELETE) {
 			return new DeleteVisitor(dm);
 		} else
+		if (t == LightdbLexer.UPDATE) {
+			return new UpdateVisitor(dm);
+		} else
 		if (t == LightdbLexer.SELECT || t == LightdbLexer.SELECT_DISTINCT) {
 			return new SelectVisitor(dm);
 		} else {

@@ -8,6 +8,10 @@ import prototype.DatabaseException;
 import prototype.DatabaseManager;
 import prototype.Table;
 
+/*
+ * Delete
+	-> DELETE FROM tbl-name [WHERE where-condition]
+ */
 public class DeleteVisitor extends Visitor {
 	private Plan plan;
 
