@@ -64,7 +64,16 @@ public abstract class Visitor {
 					parseExpr((CommonTree) t.getChild(0)),
 					"-");
 		} else
+		if (t.getType() == LightdbLexer.SELECT && t.getChildCount() == 1) {
+			// SELECT subq
+			return parseExpr((CommonTree) t.getChild(0));
+		} else
+		if (t.getType() == LightdbLexer.SELECT || t.getType() == LightdbLexer.SELECT_DISTINCT) {
+			// subq
+			return new SubqueryExpr(parseSelect(t));
+		} else
 		if (t.getType() == 112) {
+			// tbl.col
 			return new FieldExpr(t.getChild(0).toString().toLowerCase(), t.getChild(1).toString().toLowerCase());
 		}
 		if (t.getType() == LightdbLexer.ID) {
