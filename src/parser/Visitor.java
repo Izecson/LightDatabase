@@ -155,7 +155,13 @@ public abstract class Visitor {
 					}
 				}
 
-				Plan plan = new ProjectPlan(exprList, asNames, new SelectPlan(fromPlan, pred));
+				Plan plan = null;
+				if (fromPlan != null) {
+					plan = new ProjectPlan(exprList, asNames, new SelectPlan(fromPlan, pred));
+				} else {
+					plan = new ProjectPlan(exprList, asNames, null);
+				}
+
 				if (t.getType() == LightdbLexer.SELECT_DISTINCT) {
 					plan = new DistinctPlan(plan);
 				}

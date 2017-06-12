@@ -10,6 +10,7 @@ public class ProjectScan implements Scan {
 	Scan sub;
 	Schema schema;
 	LinkedList<Expr> exprList;
+	boolean start;
 	
 	public ProjectScan(Scan scan, Schema sch, LinkedList<Expr> exprs) {
 		sub = scan;
@@ -19,17 +20,21 @@ public class ProjectScan implements Scan {
 
 	@Override
 	public void open() {
-		sub.open();
+		if (sub != null) sub.open();
+		else start = false;
 	}
 
 	@Override
 	public boolean next() {
-		return sub.next();
+		if (sub != null) return sub.next();
+		if (!start) return start = true;
+		return false;
 	}
 
 	@Override
 	public void close() {
-		sub.close();
+		if (sub != null) sub.close();
+		else start = false;
 	}
 
 	@Override

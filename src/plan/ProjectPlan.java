@@ -18,7 +18,7 @@ public class ProjectPlan implements Plan {
 		exprList = exprs;
 		alias = as;
 		subPlan = p;
-		subPlan.setFather(this);
+		if (p != null) p.setFather(this);
 		
 		schema = new Schema();
 		for (String name : alias) {
@@ -32,7 +32,11 @@ public class ProjectPlan implements Plan {
 	
 	@Override
 	public Scan start() throws Exception {
-		return new ProjectScan(subPlan.start(), schema, exprList);
+		if (subPlan != null) {
+			return new ProjectScan(subPlan.start(), schema, exprList);
+		} else {
+			return new ProjectScan(null, schema, exprList);
+		}
 	}
 
 	@Override
